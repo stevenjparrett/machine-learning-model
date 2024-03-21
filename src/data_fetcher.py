@@ -1,6 +1,8 @@
+# src/data_fetcher.py
 import yfinance as yf
 
-def fetch_stock_data(tickers, start_date, end_date):
-    """Fetches historical stock data for given tickers from Yahoo Finance."""
-    data = yf.download(tickers, start=start_date, end=end_date)
+def fetch_stock_data(ticker, period='1mo'):
+    """Fetches historical stock data for the given ticker."""
+    data = yf.download(ticker, period=period)
+    print(f"fetched data for {ticker}: {data.head()}")
     return data

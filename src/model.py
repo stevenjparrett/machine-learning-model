@@ -1,16 +1,13 @@
-from keras.models import Sequential
-from keras.layers import LSTM, Dense
+# src/model.py
+from .data_fetcher import fetch_stock_data
 
-def build_model(input_shape):
-    """Builds a simple LSTM model."""
-    model = Sequential([
-        LSTM(50, return_sequences=True, input_shape=input_shape),
-        LSTM(50),
-        Dense(1)
-    ])
-    model.compile(optimizer='adam', loss='mean_squared_error')
-    return model
-
-def train_model(model, X_train, y_train, epochs=10, batch_size=32):
-    """Trains the model."""
-    model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size)
+# In model.py
+def predict_next_day_close(ticker):
+    data = fetch_stock_data(ticker, period='5d')
+    if not data.empty:
+        last_close = round(data['Close'].iloc[-1], 2)
+        print(f"Last close price for {ticker}: {last_close}")  # Confirm the last close price
+        return last_close
+    else:
+        print(f"No data fetched for {ticker}.")  # Indicate no data was fetched
+        return None
